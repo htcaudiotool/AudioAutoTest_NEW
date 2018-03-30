@@ -1,0 +1,56 @@
+[
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 19:45:06.472205", 
+        "task": "playback_offload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3305.605
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 19:45:22.943627", 
+        "task": "playback_nonoffload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3249.475
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 19:45:50.361397", 
+        "task": "record", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": -1
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 19:46:08.035856", 
+        "task": "voip_rx", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": -1
+        }
+    }, 
+    {
+        "status": "invalid", 
+        "timestamp": "2018-02-13 19:46:38.986915", 
+        "task": "voip_tx", 
+        "error-msg": "early return, possible reason: tx no sound", 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1
+        }
+    }
+]

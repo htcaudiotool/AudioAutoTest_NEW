@@ -1,0 +1,57 @@
+[
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 17:58:51.877578", 
+        "task": "playback_offload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3701.71
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 17:59:05.818815", 
+        "task": "playback_nonoffload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3449.974
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 17:59:31.185168", 
+        "task": "record", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": -1
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 17:59:48.624267", 
+        "task": "voip_rx", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3557.764
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-13 18:00:18.917669", 
+        "task": "voip_tx", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": -1
+        }
+    }
+]

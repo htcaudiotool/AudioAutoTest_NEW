@@ -1,0 +1,22 @@
+[
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-12 17:32:33.633173", 
+        "task": "voip_rx", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-12 17:32:54.199931", 
+        "task": "voip_tx", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1
+        }
+    }
+]

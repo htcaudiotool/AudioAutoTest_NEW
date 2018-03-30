@@ -1,0 +1,23 @@
+[
+    {
+        "status": "invalid", 
+        "timestamp": "2018-01-22 16:29:31.966324", 
+        "task": "playback_offload", 
+        "error-msg": "early return, possible reason: rx no sound", 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-01-22 16:29:38.121245", 
+        "task": "playback_nonoffload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 1206.3950000000002
+        }
+    }
+]

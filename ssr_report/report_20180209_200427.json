@@ -1,0 +1,24 @@
+[
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-09 20:04:30.665552", 
+        "task": "playback_offload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3504.4
+        }
+    }, 
+    {
+        "status": "valid", 
+        "timestamp": "2018-02-09 20:04:44.740485", 
+        "task": "playback_nonoffload", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 3397.5409999999997
+        }
+    }
+]

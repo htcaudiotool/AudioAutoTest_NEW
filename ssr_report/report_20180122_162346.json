@@ -1,0 +1,13 @@
+[
+    {
+        "status": "valid", 
+        "timestamp": "2018-01-22 16:24:01.539797", 
+        "task": "record", 
+        "error-msg": null, 
+        "extra": {
+            "batch_id": 1, 
+            "iter_id": 1, 
+            "elapsed": 1504.0
+        }
+    }
+]
