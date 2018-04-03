@@ -202,7 +202,7 @@ def playback_task_run(device, num_iter=1):
                 pop = AudioFunction.get_pop()
                 if pop:
                     log("pop detect")
-                    trial.put_extra(name="playback start", value="pop")
+                    trial.put_extra(name="playback pause", value="pop")
                     
                 time.sleep(1)
 
@@ -222,7 +222,7 @@ def playback_task_run(device, num_iter=1):
                 pop = AudioFunction.get_pop()
                 if pop:
                     log("pop detect")
-                    trial.put_extra(name="playback start", value="pop")
+                    trial.put_extra(name="playback resume", value="pop")
                     
                 time.sleep(1)
 
@@ -242,7 +242,7 @@ def playback_task_run(device, num_iter=1):
                 pop = AudioFunction.get_pop()
                 if pop:
                     log("pop detect")
-                    trial.put_extra(name="playback start", value="pop")
+                    trial.put_extra(name="playback seek", value="pop")
                     
                 time.sleep(2)
 
@@ -262,7 +262,7 @@ def playback_task_run(device, num_iter=1):
                 pop = AudioFunction.get_pop()
                 if pop:
                     log("pop detect")
-                    trial.put_extra(name="playback start", value="pop")
+                    trial.put_extra(name="playback forward", value="pop")
                     
                 time.sleep(2)
 
@@ -277,7 +277,7 @@ def playback_task_run(device, num_iter=1):
                 pop = AudioFunction.get_pop()
                 if pop:
                     log("pop detect")
-                    trial.put_extra(name="playback start", value="pop")
+                    trial.put_extra(name="playback stop", value="pop")
                 
                 trials.append(trial)
 
