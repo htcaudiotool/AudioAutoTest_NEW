@@ -92,6 +92,7 @@ def run(num_iter=1, is_MO=False):
         test_count = 0
 
         #start to test MO call tx
+        log("===== Now is running as MO tx test for {} times =====".format(num_iter))
         while test_count < num_iter and notAnsweredTimes <= 5:
             # MO start to call target
             log("MO start to call target ({})".format(test_count+1))
@@ -134,6 +135,7 @@ def run(num_iter=1, is_MO=False):
         #start to test MO call rx
         #reset test_count
         test_count = 0
+        log("===== Now is running as MO rx test for {} times =====".format(num_iter))
         while test_count < num_iter and notAnsweredTimes <= 5:
             trials_batch = []
             # MO start to call target
@@ -169,7 +171,7 @@ def run(num_iter=1, is_MO=False):
                 trials += trials_batch
                 with open("{}/{}/{}".format(ROOT_DIR, REPORT_DIR, filename), "w") as f:
                     f.write(TrialHelper.to_json(trials))
-
+                log("MO hang up the call...")
                 control_Stop_Call(device, serialno)
             else:
                 log("Timeout: 30 secs")
@@ -182,6 +184,7 @@ def run(num_iter=1, is_MO=False):
         
     else:
         log("This test is running as MT call")
+        log("===== Now is running as MT rx test for {} times =====".format(num_iter))
         test_count = 0
         #start to test MT call rx
         while test_count < num_iter:
@@ -207,13 +210,14 @@ def run(num_iter=1, is_MO=False):
             trials += trials_batch
             with open("{}/{}/{}".format(ROOT_DIR, REPORT_DIR, filename), "w") as f:
                 f.write(TrialHelper.to_json(trials))
-                
+            log("MT hang up the call...")
             control_Stop_Call(device, serialno)
             log("phone_call_task_rx_run--")
 
         #start to test MT call tx
         #reset test_count
         test_count = 0
+        log("===== Now is running as MT tx test for {} times =====".format(num_iter))
         while test_count < num_iter:
             # test control_MT_phone then recive phone
             ret = control_MT_phone(device, serialno)
@@ -414,7 +418,6 @@ def control_Stop_Call(device, serialno):
         return False
     
     control_Btn(vc, end_id)
-    log("hang up the call...")
     
     return True
 
