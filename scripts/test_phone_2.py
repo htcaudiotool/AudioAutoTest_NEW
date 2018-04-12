@@ -414,6 +414,7 @@ def control_Stop_Call(device, serialno):
         return False
     
     control_Btn(vc, end_id)
+    log("hang up the call...")
     
     return True
 
