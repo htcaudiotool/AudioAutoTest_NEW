@@ -94,14 +94,14 @@ def run(num_iter=1, is_MO=False):
         #start to test MO call tx
         while test_count < num_iter and notAnsweredTimes <= 5:
             # MO start to call target
-            log("MO start to call target")
+            log("MO start to call target ({})".format(test_count+1))
             ret = control_MO_phone(device, serialno, True)
             if ret is False:
                 log("control_MO_phone failed: cannot dial out")
                 control_Stop_Call(device, serialno)
                 continue
             else:
-                log("MO call: dial out success")
+                log("MO call: dial out success!")
 
             time.sleep(1)
             # Waiting target answer the call
@@ -137,7 +137,7 @@ def run(num_iter=1, is_MO=False):
         while test_count < num_iter and notAnsweredTimes <= 5:
             trials_batch = []
             # MO start to call target
-            log("MO start to call target")
+            log("MO start to call target ({})".format(test_count+1))
             ret = control_MO_phone(device, serialno, True)
             if ret is False:
                 log("control_MO_phone failed: cannot dial out")
@@ -196,7 +196,7 @@ def run(num_iter=1, is_MO=False):
             
             # phone call start
             log("Detected: answer the call")
-            log("Phone call start: RX test")
+            log("Phone call start: MT detect sound")
             test_count += 1
 
             log("-------- batch_run #{} --------".format(test_count))
@@ -224,14 +224,14 @@ def run(num_iter=1, is_MO=False):
 
             # phone call start
             log("Detected: answer the call")
-            log("Phone call start: RX test")
+            log("Phone call start: MT play sound")
             test_count += 1
             
             log("-------- batch_run #{} --------".format(test_count))
-            log("MO_call_play_sound_task++")
+            log("MT_call_play_sound_task++")
             play_sound_and_wait_cut(device,serialno)
         
-            log("MO_call_play_sound_task--")
+            log("MT_call_play_sound_task--")
 
     Logger.finalize()
 
