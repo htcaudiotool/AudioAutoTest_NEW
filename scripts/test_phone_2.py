@@ -37,8 +37,8 @@ TAG = "phone_call_test.py"
 
 
 out_number = {
-    "target" : [8, 2, 2, 9, 5, 6],     #DUT
-    "test" : [8, 7, 1, 1, 2, 1]        #Remote
+    "target" : [8, 2, 2, 9, 5, 6],     #Remote
+    "test" : [8, 7, 1, 1, 2, 1]        #DUT
 }
 
 
@@ -90,18 +90,61 @@ def run(num_iter=1, is_MO=False):
         log("This test is running as MO call")
         notAnsweredTimes = 0
         test_count = 0
-        while num_iter > 0 and notAnsweredTimes <= 5:
-            num_iter -= 1
-            test_count += 1
-            # target control_MO_phone out phone
-            log("start target MO")
+
+        #start to test MO call tx
+        while test_count < num_iter and notAnsweredTimes <= 5:
+            # MO start to call target
+            log("MO start to call target")
             ret = control_MO_phone(device, serialno, True)
             if ret is False:
-                log("can't out phone call")
+                log("control_MO_phone failed: cannot dial out")
                 control_Stop_Call(device, serialno)
                 continue
             else:
-                log("phone call out: TX test")
+                log("MO call: dial out success")
+
+            time.sleep(1)
+            # Waiting target answer the call
+            timeout = 30
+            isCallAnswered = False
+            log("Waiting target answer our call in {} secs".format(timeout))
+
+            while(timeout > 0):
+                if(get_callDuration_id(device, serialno)):
+                    log("Target has answered our call!")
+                    isCallAnswered = True
+                    break
+                else :
+                    log("Target not yet answered... {}".format(timeout))
+                    timeout -= 3
+                
+            if(isCallAnswered):
+                test_count += 1
+                log("-------- batch_run #{} --------".format(test_count))
+                play_sound_and_wait_cut(device, serialno)
+            else:
+                log("Timeout: 30 secs")
+                log("Target didn't answer our call...")
+                control_Stop_Call(device, serialno)
+                notAnsweredTimes += 1 
+            if not detect_DQ_stop(device, serialno):
+                    log("can't detect DQ log stop")
+                    continue
+
+        #start to test MO call rx
+        #reset test_count
+        test_count = 0
+        while test_count < num_iter and notAnsweredTimes <= 5:
+            trials_batch = []
+            # MO start to call target
+            log("MO start to call target")
+            ret = control_MO_phone(device, serialno, True)
+            if ret is False:
+                log("control_MO_phone failed: cannot dial out")
+                control_Stop_Call(device, serialno)
+                continue
+            else:
+                log("MO call: dial out success")
 
             time.sleep(1)
             # phone call start
@@ -119,8 +162,15 @@ def run(num_iter=1, is_MO=False):
                     timeout -= 3
                 
             if(isCallAnswered):
-                log("-------- batch_run #{} --------".format(test_count))
-                phone_call_tx_task(device, serialno)
+                test_count += 1
+                log("-------- batch_run #{} --------".format(test_count))          
+                trials_batch += detect_sound_task()
+                map(lambda trial: trial.put_extra(name="batch_id", value=test_count), trials_batch)
+                trials += trials_batch
+                with open("{}/{}/{}".format(ROOT_DIR, REPORT_DIR, filename), "w") as f:
+                    f.write(TrialHelper.to_json(trials))
+
+                control_Stop_Call(device, serialno)
             else:
                 log("Timeout: 30 secs")
                 log("Target didn't answer our call...")
@@ -132,8 +182,9 @@ def run(num_iter=1, is_MO=False):
         
     else:
         log("This test is running as MT call")
-        batch_count = 0
-        while True:
+        test_count = 0
+        #start to test MT call rx
+        while test_count < num_iter:
             trials_batch = []
 
             # test control_MT_phone then recive phone
@@ -142,23 +193,45 @@ def run(num_iter=1, is_MO=False):
                 log("Timeout: no phone call comming")
                 Logger.finalize()
                 return
-            else:
-                log("Detected: answer the call")
-                log("Phone call start: RX test")
-                batch_count += 1
-
+            
             # phone call start
-            log("-------- batch_run #{} --------".format(batch_count))
+            log("Detected: answer the call")
+            log("Phone call start: RX test")
+            test_count += 1
+
+            log("-------- batch_run #{} --------".format(test_count))
             log("phone_call_task_rx_run++")
-            trials_batch += phone_call_rx_task()
+            trials_batch += detect_sound_task()
         
-            map(lambda trial: trial.put_extra(name="batch_id", value=batch_count), trials_batch)
+            map(lambda trial: trial.put_extra(name="batch_id", value=test_count), trials_batch)
             trials += trials_batch
             with open("{}/{}/{}".format(ROOT_DIR, REPORT_DIR, filename), "w") as f:
                 f.write(TrialHelper.to_json(trials))
                 
             control_Stop_Call(device, serialno)
             log("phone_call_task_rx_run--")
+
+        #start to test MT call tx
+        #reset test_count
+        test_count = 0
+        while test_count < num_iter:
+            # test control_MT_phone then recive phone
+            ret = control_MT_phone(device, serialno)
+            if ret is False:
+                log("Timeout: no phone call comming")
+                Logger.finalize()
+                return
+
+            # phone call start
+            log("Detected: answer the call")
+            log("Phone call start: RX test")
+            test_count += 1
+            
+            log("-------- batch_run #{} --------".format(test_count))
+            log("MO_call_play_sound_task++")
+            play_sound_and_wait_cut(device,serialno)
+        
+            log("MO_call_play_sound_task--")
 
     Logger.finalize()
 
@@ -182,19 +255,14 @@ def get_callDuration_id(device, serialno):
     return False
 
 
-def phone_call_tx_task(device, serialno):
-    log("phone_call_task_tx_run++")
-    
-    trials = []
-    trial = Trial(taskname="phonecall_task_tx")  
-    
+def play_sound_and_wait_cut(device, serialno):
     playbackThread = PlaybackThread()
-    
+
     playbackThread.start()
     time.sleep(1)
     while True:
         if(not get_callDuration_id(device,serialno)):
-            log("Detect phone has been cut off...")
+            log("Detect phone call has been cut off...")
             log("Stop music")
             playbackThread.stopPlayback()
             time.sleep(2)
@@ -202,10 +270,10 @@ def phone_call_tx_task(device, serialno):
                 playbackThread.join()
             return 
         else:
-            log("Phone call has not been cut off by target...")
+            log("Phone call has not been cut off by other side...")
 
     
-def phone_call_rx_task():
+def detect_sound_task():
     trials = []
     trial = Trial(taskname="phonecall_task_rx")
 
@@ -236,19 +304,9 @@ def phone_call_rx_task():
         
     ToneDetector.stop_listen()
     th.join()
-    
-    playbackThread = PlaybackThread()
-    playbackThread.start()
-    log("MT starts to play music for 10 seconds...")
-    time.sleep(10)
-    log("Stop music")
-    playbackThread.stopPlayback()
-    time.sleep(2)
-    if playbackThread.isrun:
-        playbackThread.join()
-
+  
     return trials
-    
+
 
 def get_number_id(vc, number):
     phone_view_dict = vc.getViewsById()
